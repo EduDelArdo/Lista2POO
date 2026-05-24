@@ -1,1 +1,48 @@
+================================================================================
+RESPOSTAS DAS QUESTÕES
+================================================================================
 
+QUESTÃO 1: O que acontece se você tentar instanciar a classe Midia diretamente?
+--------------------------------------------------------------------------------
+Resposta: O Python vai gerar um erro de tipo, impedindo a criação 
+do objeto. A mensagem será algo como: "TypeError: Can't instantiate abstract 
+class Midia with abstract method reproduzir".
+Isso acontece porque Midia herda de ABC e possui um método abstrato, tornando-a incompleta por definição. Ela serve apenas como 
+molde, não como objeto real.
+
+
+QUESTÃO 2: O que acontece se uma das subclasses não implementar o método 
+reproduzir()?
+--------------------------------------------------------------------------------
+Resposta: Essa subclasse também passará a ser considerada uma classe abstrata 
+pelo Python. Consequentemente, você não conseguirá criar nenhum objeto dessa subclasse, gerando exatamente o mesmo erro ao tentar fazer 
+algo como: video = Video("Aula 1", 30). O Python exige o cumprimento do 
+"contrato" de implementação.
+
+
+QUESTÃO 3: Como a classe Plataforma consegue chamar reproduzir() em objetos 
+diferentes sem saber o tipo exato deles?
+--------------------------------------------------------------------------------
+Resposta: Isso acontece graças ao conceito de Polimorfismo. Como todas as mídias 
+no catálogo herdam da classe abstrata Midia, a classe Plataforma confia que 
+qualquer objeto ali dentro possui o método reproduzir(). Na hora da execução, 
+o Python descobre dinamicamente qual é o tipo real do objeto e chama a versão correta do método correspondente àquela subclasse.
+
+
+QUESTÃO 4: Como você modificaria o código se precisasse adicionar um novo tipo 
+de mídia, como ArtigoEscrito?
+--------------------------------------------------------------------------------
+Resposta: Bastaria criar uma nova subclasse chamada ArtigoEscrito herdando de 
+Midia e obrigatoriamente implementar o método reproduzir().
+O código ficaria assim:
+
+class ArtigoEscrito(Midia):
+    def __init__(self, titulo: str, duracao: int, num_paginas: int):
+        super().__init__(titulo, duracao)
+        self.num_paginas = num_paginas
+
+    def reproduzir(self):
+        print(f"📖 Exibindo o artigo '{self.titulo}' com {self.num_paginas} páginas para leitura...")
+
+O mais massa é que a classe Plataforma num precisaria sofrer nenhuma 
+alteração. Ela aceitaria o ArtigoEscrito no catálogo automaticamente.
